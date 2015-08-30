@@ -30,3 +30,5 @@
 
 # Debug files
 *.dSYM/
+/binaries/SoccerTool_l32
+/binaries/SoccerTool_l64
