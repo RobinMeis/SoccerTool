@@ -1,0 +1,3 @@
+- Beamer Hintergrund weiß
+- Beamer Fenster kann geschlossen werden, Admininstration bleibt auf
+- Beamer Fenster kann von Admininstration geöffnet werden
