@@ -1,1 +1,2 @@
 GTK+2.0
+libpango1.0-dev
