@@ -3,7 +3,7 @@ GtkWidget *fenster, *table, *trennstrich;
 GtkWidget *name[2][2], *tore[2][2]; //Keys: Spielfeld, Team
 GtkWidget *zeit[2]; //Key: Spielfeld
 
-void init_beamer(void) {
+void beamer_init(void) {
   fenster = gtk_window_new(GTK_WINDOW_TOPLEVEL); //Fenster initialisieren
   gtk_signal_connect(GTK_OBJECT(fenster), "destroy",GTK_SIGNAL_FUNC(gtk_main_quit),NULL);
   gtk_window_set_default_size(GTK_WINDOW(fenster), 1024, 768);
@@ -53,5 +53,13 @@ void init_beamer(void) {
   gtk_table_attach(GTK_TABLE(table), trennstrich, 2,3, 0,3, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_FILL|GTK_EXPAND|GTK_SHRINK,0,0);
 
   gtk_container_add(GTK_CONTAINER(fenster),table); //Widgets anzeigen
+  gtk_label_set_text (name[0][0], "Hallo");
   gtk_widget_show_all(fenster);
+}
+
+int beamer_set_team(int feld, int team, const char *team_name) {
+  if (feld < 0 || feld > 1 || team < 0 || team > 1)
+    return 0;
+  //gtk_label_set_text (name[feld][team], team_name);
+  return 1;
 }

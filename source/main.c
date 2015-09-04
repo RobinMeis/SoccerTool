@@ -6,8 +6,8 @@ int main(int argc, char **argv) {
   gtk_init(&argc, &argv);
 
   init_admin();
-  init_beamer();
-
+  beamer_init();
+  beamer_set_team(0,0,"hans");
   gtk_main();
   return 0;
 }
