@@ -10,8 +10,8 @@ char teams[2][MAXIMALE_ANZAHL_TEAMS_PRO_GRUPPE][MAXIMALE_LAENGE_MANNSCHAFTSNAME]
 FILE *f; //File Handler (spielplan)
 
 void open_file(void) {
-  unlink ("spielplan.txt"); //Spielplan vorbereiten
-  f = fopen("spielplan.txt", "w");
+  unlink ("spielplan.soc"); //Spielplan vorbereiten
+  f = fopen("spielplan.soc", "w");
   if (f == NULL) {
     printf("Error opening file!\n");
     exit(1);
