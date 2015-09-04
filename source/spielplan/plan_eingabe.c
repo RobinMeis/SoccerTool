@@ -13,7 +13,7 @@ void open_file(void) {
   unlink ("spielplan.soc"); //Spielplan vorbereiten
   f = fopen("spielplan.soc", "w");
   if (f == NULL) {
-    printf("Error opening file!\n");
+    printf("Spielplan kann nicht geoeffnet werden!\n");
     exit(1);
   }
 }
