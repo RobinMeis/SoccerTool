@@ -68,3 +68,8 @@ void open_spielplan(void) {
 void close_spielplan(void) {
   fclose(spielplan);
 }
+
+int get_spielzeit(int typ) { //0=Vorrunde, 1=Halbfinale, 2=Platz 3, 3=Finale
+  if (typ>=0 && typ<=3) return spielzeit[typ];
+  else return -1;
+}
