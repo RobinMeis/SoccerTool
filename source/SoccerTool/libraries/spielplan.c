@@ -71,5 +71,11 @@ void close_spielplan(void) {
 
 int get_spielzeit(int typ) { //0=Vorrunde, 1=Halbfinale, 2=Platz 3, 3=Finale
   if (typ>=0 && typ<=3) return spielzeit[typ];
-  else return -1;
+  else { g_print("Fehler: Spielzeit typ %d nicht verfuegbar", typ); return -1; }
+}
+
+const char *get_team(int spiel, int team) {
+  if (spiel>=0 && spiel<anzahl_spiele && team>=0 && team<=1)
+    return vorrunde[spiel][team];
+  else { g_print("Fehler: Team %d in Spiel %d nicht verfuegbar", team, spiel); return "None"; }
 }
