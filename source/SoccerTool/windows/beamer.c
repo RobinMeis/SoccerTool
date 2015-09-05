@@ -9,7 +9,7 @@ void beamer_init(void) {
   gtk_window_set_default_size(GTK_WINDOW(fenster), 1024, 768);
   gtk_window_set_title(GTK_WINDOW(fenster), "Beamer");
   gtk_widget_show(fenster);
-  table = gtk_table_new(6,3,FALSE);
+  table = gtk_table_new(5,3,FALSE);
 
   zeit[0]  = gtk_label_new("10:00"); //Feld 1
   name[0][0]  = gtk_label_new("-");
