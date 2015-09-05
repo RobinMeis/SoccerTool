@@ -44,9 +44,14 @@ void open_spielplan(void) {
         else if (!strcmp(data[0],"platz3")) spielzeit[2] = atoi(data[1]);
         else if (!strcmp(data[0],"finale")) spielzeit[3] = atoi(data[1]);
       } else if (modus==5) { //Vorrunde einlesen
-        strcpy(vorrunde[anzahl_spiele][0], data[1]);
-        strcpy(vorrunde[anzahl_spiele][1], data[2]);
-        ++anzahl_spiele;
+        if (anzahl_spiele<30) {
+          strcpy(vorrunde[anzahl_spiele][0], data[1]);
+          strcpy(vorrunde[anzahl_spiele][1], data[2]);
+          ++anzahl_spiele;
+        } else {
+          g_print("Fehler: Zu viele Mannschaften in Gruppe %d\n", gruppe);
+          exit(0);
+        }
       }
     } else if (modus==3 || modus==4) {
       if (anzahl_teams[gruppe]<30) {
@@ -59,7 +64,6 @@ void open_spielplan(void) {
     }
   }
 }
-
 
 void close_spielplan(void) {
   fclose(spielplan);
