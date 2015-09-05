@@ -50,7 +50,7 @@ void beamer_init(void) {
 
 
   trennstrich = gtk_image_new_from_file ("images/trennstrich.png");
-  gtk_table_attach(GTK_TABLE(table), trennstrich, 2,3, 0,3, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_FILL|GTK_EXPAND|GTK_SHRINK,0,0);
+  gtk_table_attach(GTK_TABLE(table), trennstrich, 0,6, 0,3, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_FILL|GTK_EXPAND|GTK_SHRINK,0,0);
 
   gtk_container_add(GTK_CONTAINER(fenster),table); //Widgets anzeigen
   gtk_widget_show_all(fenster);
