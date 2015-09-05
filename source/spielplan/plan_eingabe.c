@@ -16,6 +16,7 @@ void open_file(void) {
     printf("Spielplan kann nicht geoeffnet werden!\n");
     exit(1);
   }
+  fprintf(f, "+++beginn+++\n");
 }
 
 void ende(void) {
@@ -129,8 +130,8 @@ int main(void) {
   teamnamen_eingeben(1);
   team_liste();
   spielplan_eingeben();
+  fprintf(f, "---ergebnisse---\n+++ende+++\n");
   close(f);
-  fprintf(f, "---ergebnisse---\n");
   ende();
 
   return 0;
