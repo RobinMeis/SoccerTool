@@ -58,8 +58,7 @@ void beamer_init(void) {
 }
 
 int beamer_set_team(int feld, int team, const char *team_name) {
-  if (feld < 0 || feld > 1 || team < 0 || team > 1)
-    return 0;
-  //gtk_label_set_text (name[feld][team], team_name);
+  if (feld < 0 || feld > 1 || team < 0 || team > 1) { g_print("Fehler set_team"); return 0; }
+  gtk_label_set_text (name[feld][team], team_name);
   return 1;
 }
