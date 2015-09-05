@@ -12,10 +12,10 @@ void beamer_init(void) {
   table = gtk_table_new(6,3,FALSE);
 
   zeit[0]  = gtk_label_new("10:00"); //Feld 1
-  name[0][0]  = gtk_label_new("BGM");
-  name[0][1]  = gtk_label_new("G11");
-  tore[0][0]  = gtk_label_new("1");
-  tore[0][1]  = gtk_label_new("2");
+  name[0][0]  = gtk_label_new("-");
+  name[0][1]  = gtk_label_new("-");
+  tore[0][0]  = gtk_label_new("0");
+  tore[0][1]  = gtk_label_new("0");
 
   gtk_widget_modify_font (zeit[0],pango_font_description_from_string ("Arial 50"));
   gtk_widget_modify_font (name[0][0],pango_font_description_from_string ("Arial 50"));
@@ -31,10 +31,10 @@ void beamer_init(void) {
   gtk_table_attach(GTK_TABLE(table), name[0][1], 1,2, 2,3, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_FILL|GTK_EXPAND|GTK_SHRINK,0,0);
 
   zeit[1]  = gtk_label_new("10:00"); //Feld 2
-  name[1][0]  = gtk_label_new("BGE");
-  name[1][1]  = gtk_label_new("SOB");
-  tore[1][0]  = gtk_label_new("3");
-  tore[1][1]  = gtk_label_new("4");
+  name[1][0]  = gtk_label_new("-");
+  name[1][1]  = gtk_label_new("-");
+  tore[1][0]  = gtk_label_new("0");
+  tore[1][1]  = gtk_label_new("0");
 
   gtk_widget_modify_font (zeit[1],pango_font_description_from_string ("Arial 50"));
   gtk_widget_modify_font (name[1][0],pango_font_description_from_string ("Arial 50"));
@@ -53,7 +53,6 @@ void beamer_init(void) {
   gtk_table_attach(GTK_TABLE(table), trennstrich, 2,3, 0,3, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_FILL|GTK_EXPAND|GTK_SHRINK,0,0);
 
   gtk_container_add(GTK_CONTAINER(fenster),table); //Widgets anzeigen
-  gtk_label_set_text (name[0][0], "Hallo");
   gtk_widget_show_all(fenster);
 }
 
