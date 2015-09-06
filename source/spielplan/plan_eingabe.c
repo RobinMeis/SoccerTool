@@ -30,16 +30,16 @@ void spielzeit(void) {
   int time;
   printf("Spielzeit eingeben (in Minuten)\n  Vorrunde        : ");
   scanf("%d",&time);
-  fprintf(f, "vorrunde:%d\n",time);
+  fprintf(f, "vorrunde:%d\n",(time*60));
   printf("  Halbfinale      : ");
   scanf("%d",&time);
-  fprintf(f, "halbfinale:%d\n",time);
+  fprintf(f, "halbfinale:%d\n",(time*60));
   printf("  Spiel um Platz 3: ");
   scanf("%d",&time);
-  fprintf(f, "platz3:%d\n",time);
+  fprintf(f, "platz3:%d\n",(time*60));
   printf("  Finale          : ");
   scanf("%d",&time);
-  fprintf(f, "finale:%d\n",time);
+  fprintf(f, "finale:%d\n",(time*60));
 }
 
 int existiert_teamname(char *name) {
