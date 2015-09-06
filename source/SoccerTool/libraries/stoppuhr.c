@@ -15,8 +15,8 @@ void *thread(void *none) {
 void stoppuhr_init(void) {
   status[0]=0;
   status[1]=0;
-  verbleibende_zeit[0]=20;
-  verbleibende_zeit[1]=20;
+  verbleibende_zeit[0]=0;
+  verbleibende_zeit[1]=0;
 
   pthread_t inc_thread;
   if(pthread_create(&inc_thread, NULL, thread, &status[0])) {
