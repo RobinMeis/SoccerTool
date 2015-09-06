@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include "spielplan.h"
 #include "stoppuhr.h"
 
 FILE *spielplan;
@@ -67,14 +67,9 @@ void open_spielplan(void) {
       }
     }
   }
-  spiel[0] = 0;
-  spiel[1] = 1;
-  tore[0][0] = 0;
-  tore[0][1] = 0;
-  tore[1][0] = 0;
-  tore[1][1] = 0;
-  stoppuhr_set(0, spielzeit[0]);
-  stoppuhr_set(1, spielzeit[0]);
+  spiel[0] = -2;
+  spiel[1] = -1;
+  naechstes_spiel();
 }
 
 void close_spielplan(void) {
@@ -90,6 +85,24 @@ const char *get_team(int feld, int team) {
   if (((feld==0 && spiel[0]!=-4) || (feld==1 && spiel[1]!=-4)) && (team==0 || team==1))
     return vorrunde[spiel[feld]][team];
   else { g_print("Fehler: Team %d in Spiel %d nicht verfuegbar", team, feld); return "-"; }
+}
+
+void vorheriges_spiel(void) {
+  tore[0][0] = 0;
+  tore[0][1] = 0;
+  tore[1][0] = 0;
+  tore[1][1] = 0;
+
+  if (spiel[0]-2 >= 0) {
+    spiel[0]-=2;
+    stoppuhr_stop(0);
+    stoppuhr_set(0, spielzeit[0]);
+  } else {} //Halbfinale
+  if (spiel[1]-2 >= 1) {
+    spiel[1]-=2;
+    stoppuhr_stop(1);
+    stoppuhr_set(1, spielzeit[0]);
+  }
 }
 
 void naechstes_spiel(void) {
