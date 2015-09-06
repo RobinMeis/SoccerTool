@@ -10,6 +10,22 @@ GtkWidget *fenster, *table;
 GtkWidget *admin_name[2][2], *admin_tore[2][2]; //Keys: Spielfeld, Team
 GtkWidget *admin_zeit[2]; //Key: Spielfeld
 
+void admin_refresh(void) {
+  char buffer[6];
+  int team, feld;
+
+  gtk_label_set_label (GTK_LABEL(admin_name[0][0]), get_team(0,0)); //Teams anzeigen
+  gtk_label_set_label (GTK_LABEL(admin_name[0][1]), get_team(0,1));
+  gtk_label_set_label (GTK_LABEL(admin_name[1][0]), get_team(1,0));
+  gtk_label_set_label (GTK_LABEL(admin_name[1][1]), get_team(1,1));
+
+  for (feld=0; feld<2; ++feld) //Tore anzeigen
+    for (team=0; team<2; ++team) {
+      snprintf(buffer, 5, "%d", get_tore(feld,team));
+      gtk_label_set_label (GTK_LABEL(admin_tore[feld][team]), buffer);
+    }
+}
+
 void check_button_press_cb(GtkWidget *widget, gpointer data) {
   if (!strcmp("pfeife", (char *)data))
     play_whistle(1);
@@ -29,6 +45,8 @@ void check_button_press_cb(GtkWidget *widget, gpointer data) {
     stoppuhr_stop(1);
   else if (!strcmp("naechstes_spiel", (char *)data))
     naechstes_spiel();
+  else if (!strcmp("vorheriges_spiel", (char *)data))
+    vorheriges_spiel();
   else if (!strcmp("team11plus", (char *)data))
     tor_inkrementieren(0,0);
   else if (!strcmp("team11minus", (char *)data))
@@ -46,14 +64,14 @@ void check_button_press_cb(GtkWidget *widget, gpointer data) {
   else if (!strcmp("team22minus", (char *)data))
     tor_dekrementieren(1,1);
   else
-   g_print("%s\n",(char *)data);
+   g_print("Unbekanntes Event: %s\n",(char *)data);
+   admin_refresh();
 }
 
 void *thread_admin_refresh(void *none) {
   time_t rawtime;
   struct tm *info;
   char buffer[6];
-  int team, feld;
 
   for(;;) {
     rawtime=stoppuhr_get(0); //Feld 1
@@ -65,18 +83,7 @@ void *thread_admin_refresh(void *none) {
     info = localtime( &rawtime );
     strftime(buffer,6,"%M:%S", info);
     gtk_label_set_label (GTK_LABEL(admin_zeit[1]), buffer);
-
-    gtk_label_set_label (GTK_LABEL(admin_name[0][0]), get_team(0,0)); //Temas anzeigen
-    gtk_label_set_label (GTK_LABEL(admin_name[0][1]), get_team(0,1));
-    gtk_label_set_label (GTK_LABEL(admin_name[1][0]), get_team(1,0));
-    gtk_label_set_label (GTK_LABEL(admin_name[1][1]), get_team(1,1));
-
-    for (feld=0; feld<2; ++feld) //Tore anzeigen
-      for (team=0; team<2; ++team) {
-        snprintf(buffer, 5, "%d", get_tore(feld,team));
-        gtk_label_set_label (GTK_LABEL(admin_tore[feld][team]), buffer);
-      }
-
+    admin_refresh(); //TODO Remove!
     sleep(1); //TODO: Decrease
   }
 }
@@ -183,6 +190,7 @@ void admin_init(void) {
   gtk_signal_connect(GTK_OBJECT(button_pfeife), "clicked", GTK_SIGNAL_FUNC(check_button_press_cb), "pfeife");
   gtk_signal_connect(GTK_OBJECT(button_start_gemeinsam), "clicked", GTK_SIGNAL_FUNC(check_button_press_cb), "start_gemeinsam");
   gtk_signal_connect(GTK_OBJECT(button_stop_gemeinsam), "clicked", GTK_SIGNAL_FUNC(check_button_press_cb), "stop_gemeinsam");
+  gtk_signal_connect(GTK_OBJECT(button_vorheriges_spiel), "clicked", GTK_SIGNAL_FUNC(check_button_press_cb), "vorheriges_spiel");
   gtk_signal_connect(GTK_OBJECT(button_naechstes_spiel), "clicked", GTK_SIGNAL_FUNC(check_button_press_cb), "naechstes_spiel");
 
   gtk_table_attach(GTK_TABLE(table), button_start_gemeinsam, 4,5, 3,4, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_EXPAND|GTK_SHRINK,0,0);
