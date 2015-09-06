@@ -3,7 +3,7 @@
 #include <pthread.h>
 #include <time.h>
 
-int repeat;
+int repeat, is_playing=0;
 
 static int output_cb(const void * input, void * output, unsigned long frames_per_buffer, const PaStreamCallbackTimeInfo *time_info, PaStreamCallbackFlags flags, void * data) {
   SNDFILE * file = data;
@@ -21,6 +21,7 @@ static int output_cb(const void * input, void * output, unsigned long frames_per
     } while (0)
 
 void *play(void *repeat_ptr) {
+  is_playing=1;
   int n;
   int *repeat = (int *)repeat_ptr;
   PaStreamParameters out_param;
@@ -66,11 +67,13 @@ void *play(void *repeat_ptr) {
     error_check(err);
     sf_close(file);
     Pa_Terminate();
-     nanosleep(&tim, &tim2);
+    nanosleep(&tim, &tim2);
   }
+  is_playing=0;
 }
 
 int play_whistle(int rep) {
+  if (is_playing==1) return 1;
   repeat=rep;
   pthread_t inc_play;
   if(pthread_create(&inc_play, NULL, play, &repeat)) {
