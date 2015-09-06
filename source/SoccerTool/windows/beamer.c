@@ -1,5 +1,8 @@
 #include <gtk/gtk.h>
+#include <stdlib.h>
 #include "../libraries/stoppuhr.h"
+#include "../libraries/spielplan.h"
+
 GtkWidget *fenster, *table, *trennstrich;
 GtkWidget *beamer_name[2][2], *beamer_tore[2][2]; //Keys: Spielfeld, Team
 GtkWidget *beamer_zeit[2]; //Key: Spielfeld
@@ -8,6 +11,7 @@ void *thread_beamer_refresh(void *none) {
   time_t rawtime;
   struct tm *info;
   char buffer[6];
+  int feld, team;
 
   for(;;) {
     rawtime=stoppuhr_get(0); //Feld 1
@@ -19,7 +23,19 @@ void *thread_beamer_refresh(void *none) {
     info = localtime( &rawtime );
     strftime(buffer,6,"%M:%S", info);
     gtk_label_set_label (GTK_LABEL(beamer_zeit[1]), buffer);
-    sleep(1);
+
+    gtk_label_set_label (GTK_LABEL(beamer_name[0][0]), get_team(0,0)); //Teams anzeigen
+    gtk_label_set_label (GTK_LABEL(beamer_name[0][1]), get_team(0,1));
+    gtk_label_set_label (GTK_LABEL(beamer_name[1][0]), get_team(1,0));
+    gtk_label_set_label (GTK_LABEL(beamer_name[1][1]), get_team(1,1));
+
+    for (feld=0; feld<2; ++feld) //Tore anzeigen
+      for (team=0; team<2; ++team) {
+        snprintf(buffer, 5, "%d", get_tore(feld,team));
+        gtk_label_set_label (GTK_LABEL(beamer_tore[feld][team]), buffer);
+      }
+
+    sleep(1); //TODO: Decrease
   }
 }
 
@@ -80,10 +96,4 @@ void beamer_init(void) {
     fprintf(stderr, "Error creating thread\n");
     exit (1);
   }
-}
-
-int beamer_set_team(int feld, int team, const char *team_beamer_name) {
-  if (feld < 0 || feld > 1 || team < 0 || team > 1) { g_print("Fehler set_team"); return 0; }
-  gtk_label_set_text (GTK_LABEL(beamer_name[feld][team]), team_beamer_name);
-  return 1;
 }

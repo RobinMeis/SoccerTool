@@ -4,6 +4,7 @@
 #include <pthread.h>
 #include "../libraries/sound.h"
 #include "../libraries/stoppuhr.h"
+#include "../libraries/spielplan.h"
 
 GtkWidget *fenster, *table;
 GtkWidget *admin_name[2][2], *admin_tore[2][2]; //Keys: Spielfeld, Team
@@ -26,16 +27,25 @@ void check_button_press_cb(GtkWidget *widget, gpointer data) {
     stoppuhr_start(1);
   else if (!strcmp("team2stop", (char *)data))
     stoppuhr_stop(1);
-
- if(strcmp("Button 1", (char *)data) == 0)
-   g_print("Button 1 wurde gedrückt\n");
- else if(strcmp("Button 2", (char *)data) == 0)
-   g_print("Button 2 wurde gedrückt\n");
- else if(strcmp("Button 3", (char *)data) == 0)
-   g_print("Button 3 wurde gedrückt\n");
- else if(strcmp("Button 4", (char *)data) == 0)
-   g_print("Button 4 wurde gedrückt\n");
- else
+  else if (!strcmp("naechstes_spiel", (char *)data))
+    naechstes_spiel();
+  else if (!strcmp("team11plus", (char *)data))
+    tor_inkrementieren(0,0);
+  else if (!strcmp("team11minus", (char *)data))
+    tor_dekrementieren(0,0);
+  else if (!strcmp("team12plus", (char *)data))
+    tor_inkrementieren(0,1);
+  else if (!strcmp("team12minus", (char *)data))
+    tor_dekrementieren(0,1);
+  else if (!strcmp("team21plus", (char *)data))
+    tor_inkrementieren(1,0);
+  else if (!strcmp("team21minus", (char *)data))
+    tor_dekrementieren(1,0);
+  else if (!strcmp("team22plus", (char *)data))
+    tor_inkrementieren(1,1);
+  else if (!strcmp("team22minus", (char *)data))
+    tor_dekrementieren(1,1);
+  else
    g_print("%s\n",(char *)data);
 }
 
@@ -43,6 +53,7 @@ void *thread_admin_refresh(void *none) {
   time_t rawtime;
   struct tm *info;
   char buffer[6];
+  int team, feld;
 
   for(;;) {
     rawtime=stoppuhr_get(0); //Feld 1
@@ -54,7 +65,19 @@ void *thread_admin_refresh(void *none) {
     info = localtime( &rawtime );
     strftime(buffer,6,"%M:%S", info);
     gtk_label_set_label (GTK_LABEL(admin_zeit[1]), buffer);
-    sleep(1);
+
+    gtk_label_set_label (GTK_LABEL(admin_name[0][0]), get_team(0,0)); //Temas anzeigen
+    gtk_label_set_label (GTK_LABEL(admin_name[0][1]), get_team(0,1));
+    gtk_label_set_label (GTK_LABEL(admin_name[1][0]), get_team(1,0));
+    gtk_label_set_label (GTK_LABEL(admin_name[1][1]), get_team(1,1));
+
+    for (feld=0; feld<2; ++feld) //Tore anzeigen
+      for (team=0; team<2; ++team) {
+        snprintf(buffer, 5, "%d", get_tore(feld,team));
+        gtk_label_set_label (GTK_LABEL(admin_tore[feld][team]), buffer);
+      }
+
+    sleep(1); //TODO: Decrease
   }
 }
 
@@ -115,7 +138,7 @@ void admin_init(void) {
   gtk_signal_connect(GTK_OBJECT(button_team11plus), "clicked", GTK_SIGNAL_FUNC(check_button_press_cb),"team11plus");
   gtk_signal_connect(GTK_OBJECT(button_team11minus), "clicked", GTK_SIGNAL_FUNC(check_button_press_cb), "team11minus");
   gtk_signal_connect(GTK_OBJECT(button_team12plus), "clicked", GTK_SIGNAL_FUNC(check_button_press_cb),"team12plus");
-  gtk_signal_connect(GTK_OBJECT(button_team11minus), "clicked", GTK_SIGNAL_FUNC(check_button_press_cb), "team11minus");
+  gtk_signal_connect(GTK_OBJECT(button_team12minus), "clicked", GTK_SIGNAL_FUNC(check_button_press_cb), "team12minus");
   gtk_signal_connect(GTK_OBJECT(button_start1), "clicked", GTK_SIGNAL_FUNC(check_button_press_cb), "team1start");
   gtk_signal_connect(GTK_OBJECT(button_stop1), "clicked", GTK_SIGNAL_FUNC(check_button_press_cb), "team1stop");
 
@@ -160,6 +183,7 @@ void admin_init(void) {
   gtk_signal_connect(GTK_OBJECT(button_pfeife), "clicked", GTK_SIGNAL_FUNC(check_button_press_cb), "pfeife");
   gtk_signal_connect(GTK_OBJECT(button_start_gemeinsam), "clicked", GTK_SIGNAL_FUNC(check_button_press_cb), "start_gemeinsam");
   gtk_signal_connect(GTK_OBJECT(button_stop_gemeinsam), "clicked", GTK_SIGNAL_FUNC(check_button_press_cb), "stop_gemeinsam");
+  gtk_signal_connect(GTK_OBJECT(button_naechstes_spiel), "clicked", GTK_SIGNAL_FUNC(check_button_press_cb), "naechstes_spiel");
 
   gtk_table_attach(GTK_TABLE(table), button_start_gemeinsam, 4,5, 3,4, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_EXPAND|GTK_SHRINK,0,0);
   gtk_table_attach(GTK_TABLE(table), button_stop_gemeinsam, 4,5, 4,5, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_EXPAND|GTK_SHRINK,0,0);
@@ -169,7 +193,6 @@ void admin_init(void) {
   gtk_table_attach(GTK_TABLE(table), button_beamer_aus, 0,1, 9,10, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_EXPAND|GTK_SHRINK,0,0);
   gtk_table_attach(GTK_TABLE(table), button_beamer_invertieren, 6,7, 9,10, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_EXPAND|GTK_SHRINK,0,0);
   gtk_table_attach(GTK_TABLE(table), button_pfeife, 4,5, 9,10, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_EXPAND|GTK_SHRINK,0,0);
-
 
   gtk_container_add(GTK_CONTAINER(fenster),table); //Widgets anzeigen
   gtk_widget_show_all(fenster);

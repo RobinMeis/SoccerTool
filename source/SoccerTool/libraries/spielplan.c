@@ -2,12 +2,16 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "stoppuhr.h"
+
 FILE *spielplan;
 int spielzeit[4]; //Vorrunde, Halbfinale, Platz 3, Finale
 char teams[2][30][10]; //Gruppe, Team (max. 30), Name
 int anzahl_teams[2]; //Teams in Gruppen
 char vorrunde[30][2][10]; //Spiele in der Vorrunde (max. 30)
 int anzahl_spiele; //Spiele in der Vorrunde
+int spiel[2]; //Index Spiele Feld 1 und Feld2, -1 = Halbfinale, -2 = Spiel um Platz 3, -3 = Finale, -4: = Unbelegt
+int tore[2][2]; //Feld, Team
 
 void open_spielplan(void) {
   int modus=0, buffer_index, gruppe; //1=Beginn, 2=Spielzeit, 3=Gruppe 1, 4=Gruppe 2, 5=Vorrunde, 6=Ergebnisse, 7=Ende
@@ -63,19 +67,66 @@ void open_spielplan(void) {
       }
     }
   }
+  spiel[0] = 0;
+  spiel[1] = 1;
+  tore[0][0] = 0;
+  tore[0][1] = 0;
+  tore[1][0] = 0;
+  tore[1][1] = 0;
+  stoppuhr_set(0, spielzeit[0]);
+  stoppuhr_set(1, spielzeit[0]);
 }
 
 void close_spielplan(void) {
   fclose(spielplan);
 }
 
-int get_spielzeit(int typ) { //0=Vorrunde, 1=Halbfinale, 2=Platz 3, 3=Finale
-  if (typ>=0 && typ<=3) return spielzeit[typ];
-  else { g_print("Fehler: Spielzeit typ %d nicht verfuegbar", typ); return -1; }
+int get_spielzeit() {
+  if (spiel[0] >= 0) //Vorrunde
+    return spielzeit[0];
 }
 
-const char *get_team(int spiel, int team) {
-  if (spiel>=0 && spiel<anzahl_spiele && team>=0 && team<=1)
-    return vorrunde[spiel][team];
-  else { g_print("Fehler: Team %d in Spiel %d nicht verfuegbar", team, spiel); return "None"; }
+const char *get_team(int feld, int team) {
+  if (((feld==0 && spiel[0]!=-4) || (feld==1 && spiel[1]!=-4)) && (team==0 || team==1))
+    return vorrunde[spiel[feld]][team];
+  else { g_print("Fehler: Team %d in Spiel %d nicht verfuegbar", team, feld); return "-"; }
+}
+
+void naechstes_spiel(void) {
+  tore[0][0] = 0;
+  tore[0][1] = 0;
+  tore[1][0] = 0;
+  tore[1][1] = 0;
+
+  if (spiel[0]+2 < anzahl_spiele) {
+    spiel[0]+=2;
+    stoppuhr_stop(0);
+    stoppuhr_set(0, spielzeit[0]);
+  } else {} //Halbfinale
+  if (spiel[1]+2 < anzahl_spiele) {
+    spiel[1]+=2;
+    stoppuhr_stop(1);
+    stoppuhr_set(1, spielzeit[0]);
+  }
+}
+
+void tor_inkrementieren(int feld, int team) {
+  if ((feld==0 || feld==1) && (team==0 || team==1))
+    ++tore[feld][team];
+  else
+    g_print("Falsches Feld/Team");
+}
+
+void tor_dekrementieren(int feld, int team) {
+  if ((feld==0 || feld==1) && (team==0 || team==1) && tore[feld][team]>0)
+    --tore[feld][team];
+  else
+    g_print("Falsches Feld/Team oder nicht dekrementierbar");
+}
+
+int get_tore(int feld, int team) {
+  if ((feld==0 || feld==1) && (team==0 || team==1))
+    return tore[feld][team];
+  else
+    g_print("Falsches Feld/Team");
 }
