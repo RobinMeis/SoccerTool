@@ -5,6 +5,7 @@
 #include "libraries/stoppuhr.h"
 
 int main(int argc, char **argv) {
+  stoppuhr_init();
   open_spielplan();
   close_spielplan();
 
@@ -12,7 +13,6 @@ int main(int argc, char **argv) {
 
   beamer_init(); //TODO: Swap
   admin_init(); //TODO: Swap
-  stoppuhr_init();
   gtk_main();
   return 0;
 }
