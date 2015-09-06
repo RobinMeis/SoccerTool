@@ -6,8 +6,8 @@ unsigned int status[2],  //0=Stop, 1=Läuft, Index für Spiel
 
 void *thread(void *none) {
   for(;;) {
-    if (status[0]==1 && zeit[0] > 0) --zeit[0];
-    if (status[1]==1 && zeit[1] > 0) --zeit[1];
+    if (status[0]==1 && verbleibende_zeit[0] > 0) --verbleibende_zeit[0];
+    if (status[1]==1 && verbleibende_zeit[1] > 0) --verbleibende_zeit[1];
     sleep(1);
   }
 }
@@ -15,8 +15,8 @@ void *thread(void *none) {
 void stoppuhr_init(void) {
   status[0]=0;
   status[1]=0;
-  verbleibende_zeit[0]=0;
-  verbleibende_zeit[1]=0;
+  verbleibende_zeit[0]=20;
+  verbleibende_zeit[1]=20;
 
   pthread_t inc_thread;
   if(pthread_create(&inc_thread, NULL, thread, &status[0])) {
