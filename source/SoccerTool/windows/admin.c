@@ -21,12 +21,12 @@ void admin_init(void) {
   fenster = gtk_window_new(GTK_WINDOW_TOPLEVEL); //Fenster initialisieren
   GtkWidget *button_team11plus, *button_team11minus, *button_team12plus, *button_team12minus, *button_start1, *button_stop1; //Buttons Feld 1
   GtkWidget *button_team21plus, *button_team21minus, *button_team22plus, *button_team22minus, *button_start2, *button_stop2; //Buttons Feld 2
-  GtkWidget *button_start_gemeinsam, *button_stop_gemeinsam; //Buttons
+  GtkWidget *button_start_gemeinsam, *button_stop_gemeinsam, *button_naechstes_spiel, *button_vorheriges_spiel, *button_beamer_invertieren, *button_beamer_aus; //Systrembuttons
   gtk_signal_connect(GTK_OBJECT(fenster), "destroy",GTK_SIGNAL_FUNC(gtk_main_quit),NULL);
   gtk_window_set_default_size(GTK_WINDOW(fenster), 1024, 768);
   gtk_window_set_title(GTK_WINDOW(fenster), "Administration");
   gtk_widget_show(fenster);
-  table = gtk_table_new(13,9,FALSE);
+  table = gtk_table_new(13,10,FALSE);
 
   zeit[0]  = gtk_label_new("10:00"); //Feld 1
   name[0][0]  = gtk_label_new("-");
@@ -106,10 +106,23 @@ void admin_init(void) {
   gtk_table_attach(GTK_TABLE(table), button_team22plus, 6,7, 6,7, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_FILL|GTK_EXPAND|GTK_SHRINK,0,0);
   gtk_table_attach(GTK_TABLE(table), button_team22minus, 6,7, 8,9, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_FILL|GTK_EXPAND|GTK_SHRINK,0,0);
 
-  button_start_gemeinsam = gtk_button_new_with_label("Alle Start"); //Gemeinsame Buttons
+  button_start_gemeinsam = gtk_button_new_with_label("Alle Start"); //Systembuttons
   button_stop_gemeinsam = gtk_button_new_with_label("Alle Stop");
+
+  button_vorheriges_spiel = gtk_button_new_with_label("Vorheriges Spiel");
+  button_naechstes_spiel = gtk_button_new_with_label("Nächstes Spiel");
+  button_beamer_aus = gtk_button_new_with_label("Beamer an/aus");
+  button_beamer_invertieren = gtk_button_new_with_label("Beamer invertieren");
+
+
   gtk_table_attach(GTK_TABLE(table), button_start_gemeinsam, 4,5, 3,4, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_EXPAND|GTK_SHRINK,0,0);
   gtk_table_attach(GTK_TABLE(table), button_stop_gemeinsam, 4,5, 4,5, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_EXPAND|GTK_SHRINK,0,0);
+
+  gtk_table_attach(GTK_TABLE(table), button_vorheriges_spiel, 1,2, 9,10, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_EXPAND|GTK_SHRINK,0,0);
+  gtk_table_attach(GTK_TABLE(table), button_naechstes_spiel, 5,6, 9,10, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_EXPAND|GTK_SHRINK,0,0);
+  gtk_table_attach(GTK_TABLE(table), button_beamer_aus, 0,1, 9,10, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_EXPAND|GTK_SHRINK,0,0);
+  gtk_table_attach(GTK_TABLE(table), button_beamer_invertieren, 6,7, 9,10, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_EXPAND|GTK_SHRINK,0,0);
+
 
   gtk_container_add(GTK_CONTAINER(fenster),table); //Widgets anzeigen
   gtk_widget_show_all(fenster);
