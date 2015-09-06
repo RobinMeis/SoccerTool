@@ -33,3 +33,9 @@
 /binaries/SoccerTool_l32
 /binaries/SoccerTool_l64
 /binaries/SoccerTool_64
+/source/SoccerTool/spielplan.soc
+/source/spielplan/plan_eingabe_l64
+/source/spielplan/spielplan.soc
+/source/spielplan/spielplan_eingeben-l64
+/source/spielplan/spielplan_eingeben_l64
+/source/SoccerTool/SoccerTool_64
