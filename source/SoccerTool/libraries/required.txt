@@ -1,2 +1,5 @@
 GTK+2.0
 libpango1.0-dev
+libsndfile1-dev
+libportaudio-ocaml-dev
+libpthread-stubs0-dev
