@@ -48,12 +48,12 @@ void *thread_admin_refresh(void *none) {
     rawtime=stoppuhr_get(0); //Feld 1
     info = localtime( &rawtime );
     strftime(buffer,6,"%M:%S", info);
-    gtk_label_set_label (admin_zeit[0], buffer);
+    gtk_label_set_label (GTK_LABEL(admin_zeit[0]), buffer);
 
     rawtime=stoppuhr_get(1); //Feld 2
     info = localtime( &rawtime );
     strftime(buffer,6,"%M:%S", info);
-    gtk_label_set_label (admin_zeit[1], buffer);
+    gtk_label_set_label (GTK_LABEL(admin_zeit[1]), buffer);
     sleep(1);
   }
 }

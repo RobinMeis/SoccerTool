@@ -13,12 +13,12 @@ void *thread_beamer_refresh(void *none) {
     rawtime=stoppuhr_get(0); //Feld 1
     info = localtime( &rawtime );
     strftime(buffer,6,"%M:%S", info);
-    gtk_label_set_label (beamer_zeit[0], buffer);
+    gtk_label_set_label (GTK_LABEL(beamer_zeit[0]), buffer);
 
     rawtime=stoppuhr_get(1); //Feld 2
     info = localtime( &rawtime );
     strftime(buffer,6,"%M:%S", info);
-    gtk_label_set_label (beamer_zeit[1], buffer);
+    gtk_label_set_label (GTK_LABEL(beamer_zeit[1]), buffer);
     sleep(1);
   }
 }
@@ -84,6 +84,6 @@ void beamer_init(void) {
 
 int beamer_set_team(int feld, int team, const char *team_beamer_name) {
   if (feld < 0 || feld > 1 || team < 0 || team > 1) { g_print("Fehler set_team"); return 0; }
-  gtk_label_set_text (beamer_name[feld][team], team_beamer_name);
+  gtk_label_set_text (GTK_LABEL(beamer_name[feld][team]), team_beamer_name);
   return 1;
 }
