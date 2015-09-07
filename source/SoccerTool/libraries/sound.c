@@ -59,7 +59,7 @@ void *play(void *repeat_ptr) {
     err = Pa_StartStream(stream);
     error_check(err);
 
-    Pa_Sleep(1000);
+    sleep(1);
 
     err = Pa_StopStream(stream);
     error_check(err);
