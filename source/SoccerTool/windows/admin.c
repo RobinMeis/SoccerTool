@@ -27,6 +27,7 @@ void admin_refresh(void) {
 }
 
 void check_button_press_cb(GtkWidget *widget, gpointer data) {
+  gdk_threads_enter(); //TODO: Remove
   if (!strcmp("pfeife", (char *)data))
     play_whistle(1);
   else if (!strcmp("start_gemeinsam", (char *)data)) {
@@ -66,15 +67,15 @@ void check_button_press_cb(GtkWidget *widget, gpointer data) {
   else
    g_print("Unbekanntes Event: %s\n",(char *)data);
    admin_refresh();
+  gdk_threads_leave();
 }
 
-void *thread_admin_refresh(void *none) {
+void admin_time_refresh(void) {
   time_t rawtime;
   struct tm *info;
   char buffer[6];
 
-  for(;;) {
-    rawtime=stoppuhr_get(0); //Feld 1
+    rawtime=stoppuhr_get(0); //Feld 1 TODO: nach links rüclen
     info = localtime( &rawtime );
     strftime(buffer,6,"%M:%S", info);
     gtk_label_set_label (GTK_LABEL(admin_zeit[0]), buffer);
@@ -84,8 +85,7 @@ void *thread_admin_refresh(void *none) {
     strftime(buffer,6,"%M:%S", info);
     gtk_label_set_label (GTK_LABEL(admin_zeit[1]), buffer);
     admin_refresh(); //TODO Remove!
-    sleep(1); //TODO: Decrease
-  }
+
 }
 
 void admin_init(void) {
@@ -204,10 +204,4 @@ void admin_init(void) {
 
   gtk_container_add(GTK_CONTAINER(fenster),table); //Widgets anzeigen
   gtk_widget_show_all(fenster);
-
-  pthread_t inc_thread_admin_refresh; //thread starten
-  if(pthread_create(&inc_thread_admin_refresh, NULL, thread_admin_refresh, &admin_zeit)) {
-    fprintf(stderr, "Error creating thread\n");
-    exit (1);
-  }
 }

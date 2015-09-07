@@ -7,14 +7,13 @@ GtkWidget *fenster, *table, *trennstrich;
 GtkWidget *beamer_name[2][2], *beamer_tore[2][2]; //Keys: Spielfeld, Team
 GtkWidget *beamer_zeit[2]; //Key: Spielfeld
 
-void *thread_beamer_refresh(void *none) {
+void beamer_refresh(void) {
   time_t rawtime;
   struct tm *info;
   char buffer[6];
   int feld, team;
 
-  for(;;) {
-    rawtime=stoppuhr_get(0); //Feld 1
+    rawtime=stoppuhr_get(0); //Feld 1 TODO: nach link rücken
     info = localtime( &rawtime );
     strftime(buffer,6,"%M:%S", info);
     gtk_label_set_label (GTK_LABEL(beamer_zeit[0]), buffer);
@@ -34,9 +33,6 @@ void *thread_beamer_refresh(void *none) {
         snprintf(buffer, 5, "%d", get_tore(feld,team));
         gtk_label_set_label (GTK_LABEL(beamer_tore[feld][team]), buffer);
       }
-
-    sleep(1); //TODO: Decrease
-  }
 }
 
 void beamer_init(void) {
@@ -90,10 +86,4 @@ void beamer_init(void) {
 
   gtk_container_add(GTK_CONTAINER(fenster),table); //Widgets anzeigen
   gtk_widget_show_all(fenster);
-
-  pthread_t inc_thread_beamer_refresh; //thread starten
-  if(pthread_create(&inc_thread_beamer_refresh, NULL, thread_beamer_refresh, &beamer_zeit)) {
-    fprintf(stderr, "Error creating thread\n");
-    exit (1);
-  }
 }
