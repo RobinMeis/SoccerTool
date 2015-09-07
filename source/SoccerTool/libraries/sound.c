@@ -59,14 +59,14 @@ void *play(void *repeat_ptr) {
     err = Pa_StartStream(stream);
     error_check(err);
 
-    sleep(1);
+    Pa_Sleep(800);
 
     err = Pa_StopStream(stream);
     error_check(err);
     err = Pa_CloseStream(stream);
     error_check(err);
-    sf_close(file);
     Pa_Terminate();
+    sf_close(file);
     nanosleep(&tim, &tim2);
   }
   is_playing=0;
