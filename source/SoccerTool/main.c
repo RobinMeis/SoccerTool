@@ -4,14 +4,28 @@
 #include "libraries/spielplan.h"
 #include "libraries/stoppuhr.h"
 
-static gpointer refresh (gpointer userdata) {
+GMainContext *context;
+
+static gboolean refresh (gpointer userdata) {
+  admin_time_refresh();
+  beamer_refresh();
+  return G_SOURCE_REMOVE;
+}
+
+static gpointer thread_func(gpointer user_data) {
+  int n_thread = GPOINTER_TO_INT(user_data);
+  int n;
+  GSource *source;
+
+  g_print("Countdown Thread gestartet");
   for(;;) {
-    gdk_threads_enter();
-    admin_time_refresh();
-    beamer_refresh();
-    gdk_threads_leave();
+    source = g_idle_source_new();
+    g_source_set_callback(source, refresh, NULL, NULL);
+    g_source_attach(source, context);
+    g_source_unref(source);
     sleep(1); //TODO: Decrease
   }
+  g_print("Fehler: Countdown Thread beendet\n");
   return NULL;
 }
 
@@ -27,9 +41,9 @@ int main(int argc, char **argv) {
   beamer_init(); //TODO: Swap
   admin_init(); //TODO: Swap
 
-  g_main_context_default(); //TODO: Remove
+  context = g_main_context_default();
 
-  thread = g_thread_new(NULL, refresh, GINT_TO_POINTER(3));
+  thread = g_thread_new(NULL, thread_func, GINT_TO_POINTER(3));
   gtk_main();
   return 0;
 }
