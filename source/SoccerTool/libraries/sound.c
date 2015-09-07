@@ -21,7 +21,6 @@ static int output_cb(const void * input, void * output, unsigned long frames_per
     } while (0)
 
 void *play(void *repeat_ptr) {
-  is_playing=1;
   int n;
   int *repeat = (int *)repeat_ptr;
   PaStreamParameters out_param;
@@ -74,6 +73,7 @@ void *play(void *repeat_ptr) {
 
 int play_whistle(int rep) {
   if (is_playing==1) return 1;
+  is_playing=1;
   repeat=rep;
   pthread_t inc_play;
   if(pthread_create(&inc_play, NULL, play, &repeat)) {
