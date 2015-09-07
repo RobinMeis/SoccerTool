@@ -17,7 +17,7 @@ static gpointer thread_func(gpointer user_data) {
   int n;
   GSource *source;
 
-  g_print("Countdown Thread gestartet");
+  g_print("Countdown Thread gestartet\n");
   for(;;) {
     source = g_idle_source_new();
     g_source_set_callback(source, refresh, NULL, NULL);
