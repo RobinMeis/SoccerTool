@@ -33,6 +33,7 @@ void check_button_press_cb(GtkWidget *widget, gpointer data) {
   else if (!strcmp("start_gemeinsam", (char *)data)) {
     stoppuhr_start(0);
     stoppuhr_start(1);
+    play_whistle(1);
   } else if (!strcmp("stop_gemeinsam", (char *)data)) {
     stoppuhr_stop(0);
     stoppuhr_stop(1);
