@@ -5,6 +5,7 @@
 #include "../libraries/sound.h"
 #include "../libraries/stoppuhr.h"
 #include "../libraries/spielplan.h"
+#include "../libraries/beamer_control.h"
 
 GtkWidget *fenster, *table;
 GtkWidget *admin_name[2][2], *admin_tore[2][2]; //Keys: Spielfeld, Team
@@ -65,6 +66,8 @@ void check_button_press_cb(GtkWidget *widget, gpointer data) {
     tor_inkrementieren(1,1);
   else if (!strcmp("team22minus", (char *)data))
     tor_dekrementieren(1,1);
+  else if (!strcmp("beamer_on_off", (char *)data))
+    beamer_on_off();
   else
    g_print("Unbekanntes Event: %s\n",(char *)data);
    admin_refresh();
@@ -188,6 +191,7 @@ void admin_init(void) {
   button_beamer_invertieren = gtk_button_new_with_label("Beamer invertieren");
   button_pfeife = gtk_button_new_with_label("Pfeife");
 
+  gtk_signal_connect(GTK_OBJECT(button_beamer_aus), "clicked", GTK_SIGNAL_FUNC(check_button_press_cb), "beamer_on_off");
   gtk_signal_connect(GTK_OBJECT(button_pfeife), "clicked", GTK_SIGNAL_FUNC(check_button_press_cb), "pfeife");
   gtk_signal_connect(GTK_OBJECT(button_start_gemeinsam), "clicked", GTK_SIGNAL_FUNC(check_button_press_cb), "start_gemeinsam");
   gtk_signal_connect(GTK_OBJECT(button_stop_gemeinsam), "clicked", GTK_SIGNAL_FUNC(check_button_press_cb), "stop_gemeinsam");

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "../libraries/stoppuhr.h"
 #include "../libraries/spielplan.h"
+#include "../libraries/beamer_control.h"
 
 GtkWidget *fenster, *table, *trennstrich;
 GtkWidget *beamer_name[2][2], *beamer_tore[2][2]; //Keys: Spielfeld, Team
@@ -40,6 +41,8 @@ void beamer_init(void) {
   gtk_signal_connect(GTK_OBJECT(fenster), "destroy",GTK_SIGNAL_FUNC(gtk_main_quit),NULL);
   gtk_window_set_default_size(GTK_WINDOW(fenster), 1024, 768);
   gtk_window_set_title(GTK_WINDOW(fenster), "Beamer");
+  beamer_control_init(fenster);
+  beamer_on();
   gtk_widget_show(fenster);
   table = gtk_table_new(5,3,FALSE);
 
@@ -54,7 +57,6 @@ void beamer_init(void) {
   gtk_widget_modify_font (beamer_name[0][1],pango_font_description_from_string ("Arial 50"));
   gtk_widget_modify_font (beamer_tore[0][0],pango_font_description_from_string ("Arial 50"));
   gtk_widget_modify_font (beamer_tore[0][1],pango_font_description_from_string ("Arial 50"));
-
 
   gtk_table_attach(GTK_TABLE(table), beamer_tore[0][0], 0,1, 0,1, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_FILL|GTK_EXPAND|GTK_SHRINK,0,0);
   gtk_table_attach(GTK_TABLE(table), beamer_name[0][0], 1,2, 0,1, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_FILL|GTK_EXPAND|GTK_SHRINK,0,0);
