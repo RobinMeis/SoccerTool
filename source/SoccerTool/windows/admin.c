@@ -211,6 +211,9 @@ void admin_init(void) {
   button_beamer_invertieren = gtk_button_new_with_label("Beamer invertieren");
   button_pfeife = gtk_button_new_with_label("Pfeife");
 
+  gtk_widget_set_sensitive(button_vorheriges_spiel, FALSE);
+  gtk_widget_set_sensitive(button_beamer_invertieren, FALSE);
+
   gtk_signal_connect(GTK_OBJECT(button_beamer_aus), "clicked", GTK_SIGNAL_FUNC(check_button_press_cb), "beamer_on_off");
   gtk_signal_connect(GTK_OBJECT(button_pfeife), "clicked", GTK_SIGNAL_FUNC(check_button_press_cb), "pfeife");
   gtk_signal_connect(GTK_OBJECT(button_start_gemeinsam), "clicked", GTK_SIGNAL_FUNC(check_button_press_cb), "start_gemeinsam");
