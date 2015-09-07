@@ -112,14 +112,14 @@ void naechstes_spiel(void) {
   tore[1][1] = 0;
 
   if (spiel[0]+2 < anzahl_spiele) {
-    spiel[0]+=2;
     stoppuhr_stop(0);
     stoppuhr_set(0, spielzeit[0]);
+    spiel[0]+=2;
   } else {} //Halbfinale
   if (spiel[1]+2 < anzahl_spiele) {
-    spiel[1]+=2;
     stoppuhr_stop(1);
     stoppuhr_set(1, spielzeit[0]);
+    spiel[1]+=2;
   }
 }
 
