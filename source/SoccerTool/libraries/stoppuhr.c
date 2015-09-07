@@ -12,6 +12,7 @@ void *thread(void *none) {
     if (status[0]==1 && verbleibende_zeit[0] > 0)
       --verbleibende_zeit[0];
     else if (whistle_done[0]==0 && status[0]==1) {
+      status[0] = 0;
       play_whistle(1);
       whistle_done[0]=1;
     }
@@ -19,6 +20,7 @@ void *thread(void *none) {
     if (status[1]==1 && verbleibende_zeit[1] > 0)
       --verbleibende_zeit[1];
     else if (whistle_done[1]==0 && status[1]==1) {
+      status[1] = 0;
       play_whistle(1);
       whistle_done[1]=1;
     }
@@ -59,4 +61,18 @@ void stoppuhr_set(int uhr, int startzeit) {
 unsigned int stoppuhr_get(int uhr) {
   if (uhr==0 || uhr==1)
     return verbleibende_zeit[uhr];
+}
+
+void stoppuhr_increase(int uhr) {
+  if (uhr==0 || uhr==1) {
+    verbleibende_zeit[uhr]+=60;
+    whistle_done[uhr]=0;
+  }
+}
+
+void stoppuhr_decrease(int uhr) {
+  if ((uhr==0 || uhr==1) && verbleibende_zeit[uhr] >= 60) {
+    verbleibende_zeit[uhr]-=60;
+    whistle_done[uhr]=0;
+  }
 }
