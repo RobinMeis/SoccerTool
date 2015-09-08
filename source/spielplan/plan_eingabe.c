@@ -130,7 +130,7 @@ int main(void) {
   teamnamen_eingeben(1);
   team_liste();
   spielplan_eingeben();
-  fprintf(f, "---ergebnisse---\n+++ende+++\n");
+  fprintf(f, "+++ende+++\n");
   close(f);
   ende();
 

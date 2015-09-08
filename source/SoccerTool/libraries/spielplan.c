@@ -14,7 +14,7 @@ int spiel[2]; //Index Spiele Feld 1 und Feld2, -1 = Halbfinale, -2 = Spiel um Pl
 int tore[2][2]; //Feld, Team
 
 void open_spielplan(void) {
-  int modus=0, buffer_index, gruppe; //1=Beginn, 2=Spielzeit, 3=Gruppe 1, 4=Gruppe 2, 5=Vorrunde, 6=Ergebnisse, 7=Ende
+  int modus=0, buffer_index, gruppe; //1=Beginn, 2=Spielzeit, 3=Gruppe 1, 4=Gruppe 2, 5=Vorrunde
   char *buffer, data[3][15]; //Buffer
 
   spielplan = fopen("spielplan.soc", "a+");
@@ -33,7 +33,6 @@ void open_spielplan(void) {
     else if (!strcmp(line,"---gruppe1---") && modus==2) { modus=3; anzahl_teams[0]=0; gruppe=0; }
     else if (!strcmp(line,"---gruppe2---") && modus==3) { modus=4; anzahl_teams[1]=0; gruppe=1; }
     else if (!strcmp(line,"---vorrunde---") && modus==4) { modus=5; anzahl_spiele=0; }
-    else if (!strcmp(line,"---ergebnisse---") && modus==5) { modus=6;}
     else if (modus==2 || modus==5) {
       buffer = strtok (line,"-:");
       while (buffer != NULL) {
