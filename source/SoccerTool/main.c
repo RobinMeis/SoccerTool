@@ -34,7 +34,6 @@ int main(int argc, char **argv) {
 
   stoppuhr_init();
   open_spielplan();
-  close_spielplan();
 
   gtk_init(&argc, &argv);
 
@@ -45,5 +44,6 @@ int main(int argc, char **argv) {
 
   thread = g_thread_new(NULL, thread_func, GINT_TO_POINTER(3));
   gtk_main();
+  close_spielplan();
   return 0;
 }

@@ -12,6 +12,9 @@ char vorrunde[30][2][10]; //Spiele in der Vorrunde (max. 30)
 int anzahl_spiele; //Spiele in der Vorrunde
 int spiel[2]; //Index Spiele Feld 1 und Feld2, -1 = Halbfinale, -2 = Spiel um Platz 3, -3 = Finale, -4: = Unbelegt
 int tore[2][2]; //Feld, Team
+int anzahl_ergebnisse; //Anzahl der bereits vorliegenden Ergebnisse (abgeschlossene Spiele)
+int ergebnisse[30][2]; //Ergebnisse (Tore). Index 1 = Spiel, Index 2 = Mannschaft wie in teams
+int punkte[2][30]; //Punkte in Gruppe. Team (max. 30)
 
 void open_spielplan(void) {
   int modus=0, buffer_index, gruppe; //1=Beginn, 2=Spielzeit, 3=Gruppe 1, 4=Gruppe 2, 5=Vorrunde, 6=Ergebnisse
@@ -33,8 +36,8 @@ void open_spielplan(void) {
     else if (!strcmp(line,"---gruppe1---") && modus==2) { modus=3; anzahl_teams[0]=0; gruppe=0; }
     else if (!strcmp(line,"---gruppe2---") && modus==3) { modus=4; anzahl_teams[1]=0; gruppe=1; }
     else if (!strcmp(line,"---vorrunde---") && modus==4) { modus=5; anzahl_spiele=0; }
-    else if (!strcmp(line,"---ergebnisse---") && modus==5) { modus=6; g_print("ergebnisse"); }
-    else if (modus==2 || modus==5) {
+    else if (!strcmp(line,"---ergebnisse---") && modus==5) { modus=6; anzahl_ergebnisse=0; }
+    else if (modus==2 || modus==5 || modus==6) {
       buffer = strtok (line,"-:");
       while (buffer != NULL) {
         strcpy(data[buffer_index], buffer);
@@ -56,6 +59,10 @@ void open_spielplan(void) {
           g_print("Fehler: Zu viele Mannschaften in Gruppe %d\n", gruppe);
           exit(0);
         }
+      } else if (modus==6) { //Vorhandene Ergebnisse einlesen
+        ergebnisse[anzahl_ergebnisse][0] = atoi(data[1]);
+        ergebnisse[anzahl_ergebnisse][1] = atoi(data[2]);
+        ++anzahl_ergebnisse;
       }
     } else if (modus==3 || modus==4) {
       if (anzahl_teams[gruppe]<30) {
@@ -72,9 +79,9 @@ void open_spielplan(void) {
     exit(1);
   }
 
-  spiel[0] = -2;
-  spiel[1] = -1;
-  naechstes_spiel();
+  spiel[0] = -2 + anzahl_ergebnisse;
+  spiel[1] = -1 + anzahl_ergebnisse;
+  naechstes_spiel_initialisieren();
 }
 
 void close_spielplan(void) {
@@ -110,7 +117,11 @@ void vorheriges_spiel(void) {
   }
 }
 
-void naechstes_spiel(void) {
+void halbfinale(void) {
+
+}
+
+void naechstes_spiel_initialisieren(void) {
   tore[0][0] = 0;
   tore[0][1] = 0;
   tore[1][0] = 0;
@@ -120,12 +131,19 @@ void naechstes_spiel(void) {
     stoppuhr_stop(0);
     stoppuhr_set(0, spielzeit[0]);
     spiel[0]+=2;
-  } else {} //Halbfinale
+  } else {g_print("halbfinale");} //Halbfinale
   if (spiel[1]+2 < anzahl_spiele) {
     stoppuhr_stop(1);
     stoppuhr_set(1, spielzeit[0]);
     spiel[1]+=2;
   }
+}
+
+void naechstes_spiel(void) {
+  fprintf(spielplan, "%d-%d:%d\n", anzahl_ergebnisse++, tore[0][0], tore[0][1]); //Ergebnisse speichern
+  fprintf(spielplan, "%d-%d:%d\n", anzahl_ergebnisse++, tore[1][0], tore[1][1]);
+  fflush(spielplan);
+  naechstes_spiel_initialisieren();
 }
 
 void tor_inkrementieren(int feld, int team) {

@@ -10,6 +10,7 @@
 GtkWidget *fenster, *table;
 GtkWidget *admin_name[2][2], *admin_tore[2][2]; //Keys: Spielfeld, Team
 GtkWidget *admin_zeit[2]; //Key: Spielfeld
+GtkWidget *button_naechstes_spiel; //Globale Buttons
 
 void admin_refresh(void) {
   char buffer[6];
@@ -41,7 +42,11 @@ void admin_time_refresh(void) {
     info = localtime( &rawtime );
     strftime(buffer,6,"%M:%S", info);
     gtk_label_set_label (GTK_LABEL(admin_zeit[1]), buffer);
-    admin_refresh(); //TODO Remove!
+
+    if (stoppuhr_get(0)==0 && stoppuhr_get(1)==0)
+      gtk_widget_set_sensitive(button_naechstes_spiel, TRUE);
+
+    admin_refresh();
 }
 
 void check_button_press_cb(GtkWidget *widget, gpointer data) {
@@ -63,9 +68,10 @@ void check_button_press_cb(GtkWidget *widget, gpointer data) {
     stoppuhr_start(1);
   else if (!strcmp("team2stop", (char *)data))
     stoppuhr_stop(1);
-  else if (!strcmp("naechstes_spiel", (char *)data))
+  else if (!strcmp("naechstes_spiel", (char *)data)) {
+    gtk_widget_set_sensitive(button_naechstes_spiel, FALSE);
     naechstes_spiel();
-  else if (!strcmp("vorheriges_spiel", (char *)data))
+  } else if (!strcmp("vorheriges_spiel", (char *)data))
     vorheriges_spiel();
   else if (!strcmp("team11plus", (char *)data))
     tor_inkrementieren(0,0);
@@ -95,7 +101,7 @@ void check_button_press_cb(GtkWidget *widget, gpointer data) {
     stoppuhr_decrease(1);
   else
    g_print("Unbekanntes Event: %s\n",(char *)data);
-   admin_refresh();
+   //admin_refresh();
    admin_time_refresh();
   gdk_threads_leave();
 }
@@ -104,7 +110,7 @@ void admin_init(void) {
   fenster = gtk_window_new(GTK_WINDOW_TOPLEVEL); //Fenster initialisieren
   GtkWidget *button_team11plus, *button_team11minus, *button_team12plus, *button_team12minus, *button_start1, *button_stop1, *button_zeit1plus, *button_zeit1minus; //Buttons Feld 1
   GtkWidget *button_team21plus, *button_team21minus, *button_team22plus, *button_team22minus, *button_start2, *button_stop2, *button_zeit2plus, *button_zeit2minus; //Buttons Feld 2
-  GtkWidget *button_start_gemeinsam, *button_stop_gemeinsam, *button_naechstes_spiel, *button_vorheriges_spiel, *button_beamer_invertieren, *button_beamer_aus, *button_pfeife; //Systrembuttons
+  GtkWidget *button_start_gemeinsam, *button_stop_gemeinsam, *button_vorheriges_spiel, *button_beamer_invertieren, *button_beamer_aus, *button_pfeife; //Systrembuttons
   gtk_signal_connect(GTK_OBJECT(fenster), "destroy",GTK_SIGNAL_FUNC(gtk_main_quit),NULL);
   gtk_window_set_default_size(GTK_WINDOW(fenster), 1024, 768);
   gtk_window_set_title(GTK_WINDOW(fenster), "Administration");
@@ -213,6 +219,7 @@ void admin_init(void) {
 
   gtk_widget_set_sensitive(button_vorheriges_spiel, FALSE);
   gtk_widget_set_sensitive(button_beamer_invertieren, FALSE);
+  gtk_widget_set_sensitive(button_naechstes_spiel, FALSE);
 
   gtk_signal_connect(GTK_OBJECT(button_beamer_aus), "clicked", GTK_SIGNAL_FUNC(check_button_press_cb), "beamer_on_off");
   gtk_signal_connect(GTK_OBJECT(button_pfeife), "clicked", GTK_SIGNAL_FUNC(check_button_press_cb), "pfeife");
