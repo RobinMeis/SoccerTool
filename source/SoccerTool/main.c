@@ -37,8 +37,8 @@ int main(int argc, char **argv) {
 
   gtk_init(&argc, &argv);
 
-  beamer_init(); //TODO: Swap
-  admin_init(); //TODO: Swap
+  admin_init();
+  beamer_init();
 
   context = g_main_context_default();
 
