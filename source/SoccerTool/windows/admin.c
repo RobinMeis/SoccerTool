@@ -110,7 +110,7 @@ void admin_init(void) {
   fenster = gtk_window_new(GTK_WINDOW_TOPLEVEL); //Fenster initialisieren
   GtkWidget *button_team11plus, *button_team11minus, *button_team12plus, *button_team12minus, *button_start1, *button_stop1, *button_zeit1plus, *button_zeit1minus; //Buttons Feld 1
   GtkWidget *button_team21plus, *button_team21minus, *button_team22plus, *button_team22minus, *button_start2, *button_stop2, *button_zeit2plus, *button_zeit2minus; //Buttons Feld 2
-  GtkWidget *button_start_gemeinsam, *button_stop_gemeinsam, *button_vorheriges_spiel, *button_beamer_invertieren, *button_beamer_aus, *button_pfeife; //Systrembuttons
+  GtkWidget *button_start_gemeinsam, *button_stop_gemeinsam, *button_vorheriges_spiel, *button_beamer_invertieren, *button_beamer_aus, *button_pfeife, *feld_bezeichnung[2][2]; //Systrembuttons
   gtk_signal_connect(GTK_OBJECT(fenster), "destroy",GTK_SIGNAL_FUNC(gtk_main_quit),NULL);
   gtk_window_set_default_size(GTK_WINDOW(fenster), 1024, 768);
   gtk_window_set_title(GTK_WINDOW(fenster), "Administration");
@@ -122,16 +122,22 @@ void admin_init(void) {
   admin_name[0][1]  = gtk_label_new("-");
   admin_tore[0][0]  = gtk_label_new("0");
   admin_tore[0][1]  = gtk_label_new("0");
+  feld_bezeichnung[0][0] = gtk_label_new("Feld 1A");
+  feld_bezeichnung[0][1] = gtk_label_new("Feld 1B");
 
   gtk_widget_modify_font (admin_zeit[0],pango_font_description_from_string ("Arial 50"));
   gtk_widget_modify_font (admin_name[0][0],pango_font_description_from_string ("Arial 50"));
   gtk_widget_modify_font (admin_name[0][1],pango_font_description_from_string ("Arial 50"));
   gtk_widget_modify_font (admin_tore[0][0],pango_font_description_from_string ("Arial 50"));
   gtk_widget_modify_font (admin_tore[0][1],pango_font_description_from_string ("Arial 50"));
+  gtk_widget_modify_font (feld_bezeichnung[0][0],pango_font_description_from_string ("Arial 20"));
+  gtk_widget_modify_font (feld_bezeichnung[0][1],pango_font_description_from_string ("Arial 20"));
 
+  gtk_table_attach(GTK_TABLE(table), feld_bezeichnung[0][0], 1,2, 0,1, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_FILL|GTK_EXPAND|GTK_SHRINK,0,0);
   gtk_table_attach(GTK_TABLE(table), admin_tore[0][0], 0,1, 1,2, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_FILL|GTK_EXPAND|GTK_SHRINK,0,0);
   gtk_table_attach(GTK_TABLE(table), admin_name[0][0], 1,2, 1,2, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_FILL|GTK_EXPAND|GTK_SHRINK,0,0);
   gtk_table_attach(GTK_TABLE(table), admin_zeit[0], 0,1, 3,5, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_EXPAND|GTK_SHRINK,0,0);
+  gtk_table_attach(GTK_TABLE(table), feld_bezeichnung[0][1], 1,2, 6,7, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_FILL|GTK_EXPAND|GTK_SHRINK,0,0);
   gtk_table_attach(GTK_TABLE(table), admin_tore[0][1], 0,1, 7,8, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_FILL|GTK_EXPAND|GTK_SHRINK,0,0);
   gtk_table_attach(GTK_TABLE(table), admin_name[0][1], 1,2, 7,8, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_FILL|GTK_EXPAND|GTK_SHRINK,0,0);
 
@@ -140,16 +146,22 @@ void admin_init(void) {
   admin_name[1][1]  = gtk_label_new("-");
   admin_tore[1][0]  = gtk_label_new("0");
   admin_tore[1][1]  = gtk_label_new("0");
+  feld_bezeichnung[1][0] = gtk_label_new("Feld 2A");
+  feld_bezeichnung[1][1] = gtk_label_new("Feld 2B");
 
   gtk_widget_modify_font (admin_zeit[1],pango_font_description_from_string ("Arial 50"));
   gtk_widget_modify_font (admin_name[1][0],pango_font_description_from_string ("Arial 50"));
   gtk_widget_modify_font (admin_name[1][1],pango_font_description_from_string ("Arial 50"));
   gtk_widget_modify_font (admin_tore[1][0],pango_font_description_from_string ("Arial 50"));
   gtk_widget_modify_font (admin_tore[1][1],pango_font_description_from_string ("Arial 50"));
+  gtk_widget_modify_font (feld_bezeichnung[1][0],pango_font_description_from_string ("Arial 20"));
+  gtk_widget_modify_font (feld_bezeichnung[1][1],pango_font_description_from_string ("Arial 20"));
 
+  gtk_table_attach(GTK_TABLE(table), feld_bezeichnung[1][0], 5,6, 0,1, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_FILL|GTK_EXPAND|GTK_SHRINK,0,0);
   gtk_table_attach(GTK_TABLE(table), admin_name[1][0], 5,6, 1,2, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_FILL|GTK_EXPAND|GTK_SHRINK,0,0);
   gtk_table_attach(GTK_TABLE(table), admin_tore[1][0], 6,7, 1,2, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_FILL|GTK_EXPAND|GTK_SHRINK,0,0);
   gtk_table_attach(GTK_TABLE(table), admin_zeit[1], 6,7, 3,5, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_EXPAND|GTK_SHRINK,0,0);
+  gtk_table_attach(GTK_TABLE(table), feld_bezeichnung[1][1], 5,6, 6,7, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_FILL|GTK_EXPAND|GTK_SHRINK,0,0);
   gtk_table_attach(GTK_TABLE(table), admin_name[1][1], 5,6, 7,8, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_FILL|GTK_EXPAND|GTK_SHRINK,0,0);
   gtk_table_attach(GTK_TABLE(table), admin_tore[1][1], 6,7, 7,8, GTK_FILL|GTK_EXPAND|GTK_SHRINK,GTK_FILL|GTK_EXPAND|GTK_SHRINK,0,0);
 
