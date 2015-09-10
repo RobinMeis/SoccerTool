@@ -52,7 +52,7 @@ void beamer_init(void) {
   beamer_tore[0][0]  = gtk_label_new("0");
   beamer_tore[0][1]  = gtk_label_new("0");
   feld_bezeichnung[0][0] = gtk_label_new("Feld 1A");
-  feld_bezeichnung[0][1] = gtk_label_new("Feld 2A");
+  feld_bezeichnung[0][1] = gtk_label_new("Feld 1B");
 
   gtk_widget_modify_font (beamer_zeit[0],pango_font_description_from_string ("Arial 50"));
   gtk_widget_modify_font (beamer_name[0][0],pango_font_description_from_string ("Arial 50"));
@@ -75,7 +75,7 @@ void beamer_init(void) {
   beamer_name[1][1]  = gtk_label_new("-");
   beamer_tore[1][0]  = gtk_label_new("0");
   beamer_tore[1][1]  = gtk_label_new("0");
-  feld_bezeichnung[1][0] = gtk_label_new("Feld 1B");
+  feld_bezeichnung[1][0] = gtk_label_new("Feld 2A");
   feld_bezeichnung[1][1] = gtk_label_new("Feld 2B");
 
   gtk_widget_modify_font (beamer_zeit[1],pango_font_description_from_string ("Arial 50"));
