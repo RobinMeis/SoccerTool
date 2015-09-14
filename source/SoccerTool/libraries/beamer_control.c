@@ -12,18 +12,14 @@ void beamer_control_init(GtkWidget *fenster_ptr) {
 void beamer_off() {
   beamer_state=0;
   GdkColor color;
-  color.red = 0x0000;
-  color.green = 0x0000;
-  color.blue = 0x0000;
+  gdk_color_parse ("black", &color);
   gtk_widget_modify_bg(beamer_fenster_ptr, GTK_STATE_NORMAL, &color);
 }
 
 void beamer_on() {
   beamer_state=1;
   GdkColor color;
-  color.red = 0xffff;
-  color.green = 0xffff;
-  color.blue = 0xffff;
+  gdk_color_parse ("white", &color);
   gtk_widget_modify_bg(beamer_fenster_ptr, GTK_STATE_NORMAL, &color);
 
 
