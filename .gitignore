@@ -40,3 +40,4 @@
 
 #Spielpläne
 *.soc
+/source/spielplan/spielplan_eingeben-l32
