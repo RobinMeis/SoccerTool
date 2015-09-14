@@ -20,15 +20,17 @@ void open_file(void) {
 }
 
 void ende(void) {
-  printf("Enter druecken zum Beenden"); //TODO: fgets kann das besser als scanf
-  scanf("%d");
+  printf("\n\nEingabe abgeschlossen! Enter druecken zum Beenden!"); //TODO: fgets kann das besser als scanf
+  char dummy[2];
+  fgets(dummy, 2, stdin);
+  fgets(dummy, 2, stdin);
   exit(0);
 }
 
 void spielzeit(void) {
   fprintf(f, "---spielzeit---\n");
   int time;
-  printf("Spielzeit eingeben (in Minuten)\n  Vorrunde        : ");
+  printf("Spielzeit eingeben (in Minuten) Achtung: Das Programm kann derzeit nur Eingaben der Vorrunde verarbeiten. Für Finalspiele müssen die Gegner nach der Vorrunde erneut als Vorrunde eingetragen werden\n  Vorrunde        : ");
   scanf("%d",&time);
   fprintf(f, "vorrunde:%d\n",(time*60));
   printf("  Halbfinale      : ");
