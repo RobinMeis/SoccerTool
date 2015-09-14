@@ -15,6 +15,7 @@ int tore[2][2]; //Feld, Team
 int anzahl_ergebnisse; //Anzahl der bereits vorliegenden Ergebnisse (abgeschlossene Spiele)
 int ergebnisse[30][2]; //Ergebnisse (Tore). Index 1 = Spiel, Index 2 = Mannschaft wie in teams
 int punkte[2][30]; //Punkte in Gruppe. Team (max. 30)
+char spielfeld_leer[2] = "-\0";
 
 void open_spielplan(void) {
   int modus=0, buffer_index, gruppe; //1=Beginn, 2=Spielzeit, 3=Gruppe 1, 4=Gruppe 2, 5=Vorrunde, 6=Ergebnisse
@@ -96,7 +97,9 @@ int get_spielzeit() {
 const char *get_team(int feld, int team) {
   if (((feld==0 && spiel[0]!=-4) || (feld==1 && spiel[1]!=-4)) && (team==0 || team==1))
     return vorrunde[spiel[feld]][team];
-  else { g_print("Fehler: Team %d in Spiel %d nicht verfuegbar", team, feld); return "-"; }
+  else {
+    return spielfeld_leer;
+  }
 }
 
 void vorheriges_spiel(void) {
@@ -109,7 +112,7 @@ void vorheriges_spiel(void) {
     spiel[0]-=2;
     stoppuhr_stop(0);
     stoppuhr_set(0, spielzeit[0]);
-  } else {} //Halbfinale
+  }
   if (spiel[1]-2 >= 1) {
     spiel[1]-=2;
     stoppuhr_stop(1);
@@ -131,12 +134,14 @@ void naechstes_spiel_initialisieren(void) {
     stoppuhr_stop(0);
     stoppuhr_set(0, spielzeit[0]);
     spiel[0]+=2;
-  } else {g_print("halbfinale");} //Halbfinale
+  } else
+    spiel[1]=-4;
   if (spiel[1]+2 < anzahl_spiele) {
     stoppuhr_stop(1);
     stoppuhr_set(1, spielzeit[0]);
     spiel[1]+=2;
-  }
+  } else
+    spiel[1]=-4;
 }
 
 void naechstes_spiel(void) {
